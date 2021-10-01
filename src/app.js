@@ -1,9 +1,11 @@
 import './app.css';
 import React, { useState, useEffect, useMemo } from 'react';
+
 import { useDispatch, useSelector } from "react-redux";
+import { updateFilter, updateIndicatorPrefix } from './redux/tw-actions';
 
-import { updateFilter, updateIndicatorPrefix} from './redux/tw-actions';
-
+import TickerTable from './components/tickers-table'
+import ChipsArray from './components/indicator-chips';
 
 const App = (state) => {
   // useEffect(() => { }, []);
@@ -15,37 +17,46 @@ const App = (state) => {
     });
   }
 
+  const data = useMemo(() => [
+    {
+      ticker: 'AAPL',
+      open: 140.00,
+      high: 142.40,
+      close: 138.10,
+      low: 137.96,
+    }
+]);
+
   const columns = useMemo(
     () => [{
         Header: 'Filtered Result',
         columns: [
-            {
-                Header: 'Ticker',
-                accessor: 'ticker', // accessor is the "key" in the data
-              },
-              {
-                Header: 'Open',
-                accessor: 'open',
-              },
-              {
-                Header: 'High',
-                accessor: 'high',
-              },
-              {
-                Header: 'Close',
-                accessor: 'close',
-              },
-              {
-                Header: 'Low',
-                accessor: 'low',
-              }
+          {
+            Header: 'Ticker',
+            accessor: 'ticker',
+          },
+          {
+            Header: 'Open',
+            accessor: 'open',
+          },
+          {
+            Header: 'High',
+            accessor: 'high',
+          },
+          {
+            Header: 'Close',
+            accessor: 'close',
+          },
+          {
+            Header: 'Low',
+            accessor: 'low',
+          }
         ]
-    }], []
-)
+    }], [])
 
   return (
     <div className="App">
-      <header className="App-header">
+      {/* <header className="App-header">
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
@@ -58,18 +69,11 @@ const App = (state) => {
         >
           Learn React
         </a>
-      </header>
+      </header> */}
+      <TickerTable columns={columns} data={data}></TickerTable>
+      <ChipsArray></ChipsArray>
     </div>
   );
 }
-
-// const mapStateToProps = state => ({
-//   ...state
-// });
-
-// const mapDispatchToProps = dispatch => ({
-//   updateFilter: () => dispatch(updateFilter),
-//   updateIndicatorPrefix: () => dispatch(updateIndicatorPrefix)
-// });
 
 export default App;

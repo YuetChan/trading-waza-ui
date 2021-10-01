@@ -1,16 +1,13 @@
 import { useTable } from "react-table";
 
-const TikcerTable = ({columns, data}) => {
-    const {
-        getTableProps, 
-        getTableBodyProps, 
-        headerGroups, 
-        rows, 
-        prepareRow 
-    } = useTable({
-        columns,
-        data
-      });
+const TickerTable = ({columns, data}) => {
+  const {
+    getTableProps, 
+    getTableBodyProps, 
+    headerGroups, 
+    rows, 
+    prepareRow 
+  } = useTable({columns, data});
 
   return (
     <table {...getTableProps()}>
@@ -38,3 +35,5 @@ const TikcerTable = ({columns, data}) => {
     </table>
   );
 }
+
+export default TickerTable;
