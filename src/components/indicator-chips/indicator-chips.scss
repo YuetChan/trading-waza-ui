@@ -1,0 +1,38 @@
+.indicator-chips {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+
+    &__date-picker {
+        margin-bottom: 21px;
+    }
+
+    &__autocomplete {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        
+        margin-bottom: 23px;
+
+        &__icon{
+            margin-left: 21px;
+            font-size: 25px;
+            color: rgba(233, 30, 99, 1);
+        }
+    }
+
+    &__chips-wrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: start;
+
+        padding: 0px 0px;
+    }
+
+    &__chips {
+        margin: 7px 0px;
+        margin-right: 5px;
+    }
+}

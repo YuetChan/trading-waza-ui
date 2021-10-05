@@ -1,0 +1,40 @@
+table {
+    margin: 0px 21px;
+    width: 95%;
+    color: whitesmoke;
+
+    border-collapse: collapse; 
+    th { 
+        padding: 5px 0px; 
+    }
+    tr td { 
+        padding: 7px 0px; 
+    }
+}
+
+pre {
+    background: rgba(39, 40, 46, 1);
+    color: whitesmoke;
+
+    padding: 12px 0px 14px 0;
+    width: 100%;
+    min-width: 900px;
+    min-height: 900px;
+
+    line-height: 140%;
+    counter-reset: line-numbering;
+
+    // .line::before {
+    //     content: counter(line-numbering);
+    //     counter-increment: line-numbering;
+
+    //     padding-right: 1em;
+    //     padding-left: 8px;
+
+    //     width: 1.5em;
+    //     text-align: right;
+
+    //     opacity: 0.5;
+    //     color: whitesmoke;
+    // }
+}

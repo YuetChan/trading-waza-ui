@@ -1,0 +1,60 @@
+.app {
+  height: 100%;
+  text-align: center;
+
+  &__nav-banner {
+    position: relative;
+    padding: 0px 21px;
+    padding-right: 34px;
+    
+    color: rgba(77, 77, 77, 1);
+    font-size: 23px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: whitesmoke;
+    min-height: 44px;
+
+    border-bottom: 1px solid rgba(77, 77, 77, 0.4);
+
+    &__title { font-weight: bold; }
+
+    &__icon {
+      position: absolute;
+      font-size: 27px;
+      left: 173px;
+      top: 8px;
+      color: rgba(219, 68, 55, 1);
+    }
+  }
+
+  &__indicator-chips-wrapper {
+    display: flex;
+    flex-direction: column;
+    
+    height: calc(100vh - 44px);
+    max-width: 344px;
+    min-width: 344px;
+
+    padding: 21px 13px;
+    padding-right: 5px;
+    border-right: 1px solid rgba(77, 77, 77, 0.4);
+
+    background-color: whitesmoke;
+
+    &__indicator-chips { margin-bottom: 34px; }
+  }
+
+  &__tickers-table-wrapper {
+    max-height: calc(100vh - 44px);
+    width: 977px;
+    padding: 0px 21px;
+
+    overflow-y: auto;
+
+    background-color: white;
+  }
+}

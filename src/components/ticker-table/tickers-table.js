@@ -1,3 +1,4 @@
+import './ticker-table.scss';
 import { useTable } from "react-table";
 
 const TickerTable = ({columns, data}) => {
@@ -10,6 +11,7 @@ const TickerTable = ({columns, data}) => {
   } = useTable({columns, data});
 
   return (
+    <pre>
     <table {...getTableProps()}>
       <thead>
         {headerGroups.map(headerGroup => (
@@ -33,6 +35,8 @@ const TickerTable = ({columns, data}) => {
         })}
       </tbody>
     </table>
+    </pre>
+
   );
 }
 
