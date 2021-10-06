@@ -1,9 +1,9 @@
 import { createStore, applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
-import TwReducer from "./tw-reducer";
+import twReducer from "./tw-reducer";
 
 function configureStore(state = {rows: [], indicators: []}) {
-  return createStore(TwReducer, state, applyMiddleware(thunk));
+  return createStore(twReducer, state, applyMiddleware(thunk));
 }
 
 export default configureStore;

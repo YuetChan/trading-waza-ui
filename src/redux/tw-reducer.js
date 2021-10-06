@@ -1,16 +1,19 @@
-import { UPDATE_FILTER, UPDATE_INDICATOR_PREFIX } from "./tw-actions";
+import { UPDATE_FILTER_DONE, UPDATE_INDICATOR_PREFIX_DONE } from "./tw-actions";
   
-  function TwReducer(state, action) {
+  function twReducer(state, action) {
+    
     const { type, payload } = action;
   
+    console.log(state);
+
     switch (type) {
-      case UPDATE_FILTER:
+      case UPDATE_FILTER_DONE:
         return {
           ...state, 
           rows: payload
         };
   
-      case UPDATE_INDICATOR_PREFIX:
+      case UPDATE_INDICATOR_PREFIX_DONE:
         return {
           ...state, 
           indicators: payload
@@ -22,5 +25,4 @@ import { UPDATE_FILTER, UPDATE_INDICATOR_PREFIX } from "./tw-actions";
     }
   };
   
-  export default TwReducer;
-  
+  export default twReducer;

@@ -1,5 +1,5 @@
-import './app.scss';
 import React, { useState, useEffect, useMemo } from 'react';
+import './app.scss';
 
 import Box from '@mui/material/Box';
 import Pagination from '@mui/material/Pagination';
@@ -13,14 +13,7 @@ import TickerTable from './components/ticker-table/tickers-table'
 import IndicatorChips from './components/indicator-chips/indicator-chips';
 import SubscribeDialog from './components/subscribe-dialog/subscribe-dialog'
 
-const App = (state) => {
-  const dispatch = useDispatch();
-  const handleClick = () => {
-    dispatch(updateFilter('09-09-2021', ['td_9', 'golden_cross_200'])).then(val => {
-      console.log(val)
-    });
-  }
-
+const App = () => {
   const data = useMemo(() => [
     {
       ticker: 'AAPL',

@@ -1,35 +1,46 @@
 import TwService from "../services/tw-service";
 
-export const UPDATE_FILTER = 'UPDATE_FILTER';
-export const UPDATE_INDICATOR_PREFIX = 'UPDATE_INDICATOR_PREFIX';
-
 export const updateFilter = (dateStr, indicators) => async (dispatch) => {
-    try {
-      const res = await TwService.getRowsByFilter(dateStr, indicators);
-
-      dispatch({
-        type: UPDATE_FILTER,
-        payload: res.rows,
-      });
+  let action = null;
+  try {
+    const res = await TwService.getRowsByFilter(dateStr, indicators);
+    action = res.status === 200 ? updateFilterDone(res.rows) : updateFilterFailed();
+  }catch (err) { 
+    action = updateFilterFatal(err);
+  }
   
-      return Promise.resolve(res.rows);
-    } catch (err) {
-      return Promise.reject(err);
-    }
+  dispatch(action);
 };
 
-export const updateIndicatorPrefix = (prefix) => async (dispatch) => {
-    try {
-      const res = await TwService.getIndicatorsByPrefix(prefix);
+export const updateIndicatorPrefix = (prefix)  => async (dispatch) => {
+  let action = null;
+  try {
+    const res = await TwService.getIndicatorsByPrefix(prefix);
+    console.log(res.status)
+    action = res.status === 200 ? updateIndicatorPrefixDone(res.data) : updateIndicatorPrefixFailed();
+    console.log(res.data)
+  }catch (err) { 
+    action = updateIndicatorPrefixFatal(err); 
+  }
   
-      dispatch({
-        type: UPDATE_INDICATOR_PREFIX,
-        payload: res.data,
-      });
-  
-      return Promise.resolve(res.data);
-    } catch (err) {
-      return Promise.reject(err);
-    }
+  dispatch(action);
+  return {type: UPDATE_INDICATOR_PREFIX };
 };
 
+export const updateFilterDone = (data) => ({ type: UPDATE_FILTER_DONE, payload: data });
+export const updateFilterFailed = () => ({ type: UPDATE_FILTER_FAILED});
+export const updateFilterFatal = (err) => ({type: UPDATE_FILTER_FATAL});
+
+export const updateIndicatorPrefixDone = (data) => ({ type: UPDATE_INDICATOR_PREFIX_DONE, payload: data});
+export const updateIndicatorPrefixFailed = ()  => ({ type: UPDATE_INDICATOR_PREFIX_FAILED });
+export const updateIndicatorPrefixFatal = (err)  => ({ type: UPDATE_INDICATOR_PREFIX_FATAL });
+
+export const UPDATE_FILTER = 'UPDATE_FILTER';
+export const UPDATE_FILTER_DONE = 'UPDATE_FILTER_DONE';
+export const UPDATE_FILTER_FAILED = 'UPDATE_FILTER_FAILED';
+export const UPDATE_FILTER_FATAL = 'UPDATE_FILTER_FATAL';
+
+export const UPDATE_INDICATOR_PREFIX = 'UPDATE_INDICATOR_PREFIX';
+export const UPDATE_INDICATOR_PREFIX_DONE = 'UPDATE_INDICATOR_PREFIX_DONE';
+export const UPDATE_INDICATOR_PREFIX_FAILED = 'UPDATE_INDICATOR_PREFIX_FAILED';
+export const UPDATE_INDICATOR_PREFIX_FATAL = 'UPDATE_INDICATOR_PREFIX_FATAL';

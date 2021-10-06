@@ -1,4 +1,6 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import './indicator-chips.scss';
 
 import { AiOutlineFunction } from 'react-icons/ai';
@@ -12,26 +14,25 @@ import DateAdapter from '@material-ui/lab/AdapterDateFns';
 import DatePicker from '@material-ui/lab/DatePicker';
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 
-const IndicatorChips = () => {
-  const [chipData, setChipData] = React.useState([
-    { key: 0, label: 'Td 9 Top' },
-    { key: 1, label: 'SMA 20/50/200 Cross' },
-    { key: 2, label: 'SMA 20/50/100 Cross' },
-    { key: 3, label: 'Bullish Engulfing' },
-    { key: 4, label: 'Bearish Engulfing' },
-  ]);
+import { updateIndicatorPrefix } from '../../redux/tw-actions'
 
-  const [value, setValue] = React.useState(null);
+const IndicatorChips = () => {
+  const dispatch = useDispatch();
+
+  const indicators = useSelector(state => state.indicators);
+
+  const [indicatorOpts, setIndicatorOpts] = useState(useSelector(state => state.indicators));
+  const [chipData, setChipData] = useState([{key: 1, label: 'Bullish Engulfing'}, {key: 2, label: 'Bearish Engulfing'}]);
+  const [value, setValue] = useState(null);
+
+  useEffect(() => {
+    console.log(indicators);
+  }, [indicators])
 
   const handleDelete = (key) => () => {
     setChipData((chips) => chips.filter((chip) => chip.key !== key));
+    dispatch(updateIndicatorPrefix(''));
   };
-
-  const testOptions = [
-    { label: 'Td 9 Top' },
-    { label: 'SMA 20/50/100 Cross' },
-    { label: 'SMA 20/50/200 Cross' },
-  ]
 
   const chips = [];
   for(const {key, label} of chipData) {
@@ -68,7 +69,7 @@ const IndicatorChips = () => {
       <div class='indicator-chips__autocomplete'>
         <Autocomplete
           disablePortal
-          options={testOptions}
+          options={indicatorOpts}
           sx={{ 
             width: '211px'
           }}
