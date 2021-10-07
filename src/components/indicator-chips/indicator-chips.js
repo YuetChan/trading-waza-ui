@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-import './indicator-chips.scss';
-
 import { AiOutlineFunction } from 'react-icons/ai';
 import { TiDeleteOutline } from 'react-icons/ti'
+
+import './indicator-chips.scss';
 
 import Chip from '@mui/material/Chip';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-
 import DateAdapter from '@material-ui/lab/AdapterDateFns';
 import DatePicker from '@material-ui/lab/DatePicker';
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
@@ -17,69 +15,89 @@ import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import { updateIndicatorPrefix } from '../../redux/tw-actions'
 
 const IndicatorChips = () => {
+  const indicatorOpts = useSelector(state => state.indicators);
+
+  const [indicatorChips, setIndicatorChips] = useState([]);
+  const [chipsElement, setChipsElement] = useState([]);
+  const [date, setDate] = useState(null);
+
   const dispatch = useDispatch();
+  useEffect(() => { dispatch(updateIndicatorPrefix('')); }, []);
+  useEffect(() => { resetChipsElement(); }, [indicatorChips]);
 
-  const indicators = useSelector(state => state.indicators);
+  const handleDatePick = (date) => { console.log(date); setDate(date)}
+  const handleChipDelete = (key) => () => { setIndicatorChips(Object.assign([], indicatorChips.filter(chip => chip.key !== key))); };
+  const handleOptSelect = (opt) => {
+    console.log('optSelect called')
+    setIndicatorChips(() => {
+      let changed = false;
 
-  const [indicatorOpts, setIndicatorOpts] = useState(useSelector(state => state.indicators));
-  const [chipData, setChipData] = useState([{key: 1, label: 'Bullish Engulfing'}, {key: 2, label: 'Bearish Engulfing'}]);
-  const [value, setValue] = useState(null);
+      if(indicatorChips.filter(chip => chip.label === opt).length === 0 && opt.length) {
+        const lastIndex = indicatorChips.length - 1;
+        const key = lastIndex === -1 ? 0 : indicatorChips[lastIndex].key + 1 ;
 
-  useEffect(() => {
-    console.log(indicators);
-  }, [indicators])
+        const newChip = { key: key, label: opt };
+        indicatorChips.push(newChip);
 
-  const handleDelete = (key) => () => {
-    setChipData((chips) => chips.filter((chip) => chip.key !== key));
-    dispatch(updateIndicatorPrefix(''));
-  };
+        changed = true;
+      }
 
-  const chips = [];
-  for(const {key, label} of chipData) {
-    chips.push(
-      <div class="indicator-chips__chips">
-        <Chip 
-          sx ={{
-            fontSize: '13px',
-            color: 'rgb(0, 116, 204)',
-            backgroundColor: 'rgb(225, 236, 244)'
-          }}
-          label={label}
-          onDelete={handleDelete(key)}
-          deleteIcon={<TiDeleteOutline/>}
-        />
-      </div>)
+      return changed ? Object.assign([], indicatorChips) : indicatorChips;
+    });
+  }
+
+  const resetChipsElement = () => {
+    console.log('resetChipElement called')
+    chipsElement.splice(0, chipsElement.length);
+
+    indicatorChips.forEach(chip => {
+      chipsElement.push(
+        <div className="indicator-chips__chips" key={chip.key}>
+          <Chip 
+            sx ={{
+              fontSize: '13px',
+              color: 'rgb(0, 116, 204)',
+              backgroundColor: 'rgb(225, 236, 244)'
+            }}
+            label={chip.label}
+            onDelete={handleChipDelete(chip.key)}
+            deleteIcon={<TiDeleteOutline/>}
+          />
+        </div>)
+    })
+
+    setChipsElement(Object.assign([], chipsElement))  
   }
 
   return (
-    <div class='indicator-chips'>
-      <div class='indicator-chips__date-picker'>
+    <div className='indicator-chips'>
+      <div className='indicator-chips__date-picker'>
         <LocalizationProvider dateAdapter={DateAdapter}>
           <DatePicker
             label="Date"
-            value={value}
-            onChange={(newValue) => {
-              setValue(newValue);
-            }}
+            value={date}
+            onChange={(val) => { handleDatePick(val); }}
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
       </div>
 
-      <div class='indicator-chips__autocomplete'>
+      <div className='indicator-chips__autocomplete'>
         <Autocomplete
           disablePortal
+          autoHighlight
+          onInputChange={(event, val) => { handleOptSelect(val); }}
           options={indicatorOpts}
           sx={{ 
             width: '211px'
           }}
           renderInput={(params) => <TextField {...params} label="Indicator"/>}
         />
-        <AiOutlineFunction class="indicator-chips__autocomplete__icon"/>
+        <AiOutlineFunction className="indicator-chips__autocomplete__icon"/>
       </div>
 
-      <div class='indicator-chips__chips-wrapper'>   
-        {chips}
+      <div className='indicator-chips__chips-wrapper'>   
+        {chipsElement}
       </div> 
     </div>);
 }

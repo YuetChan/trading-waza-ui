@@ -66,11 +66,11 @@ const App = () => {
 
   return (
     <div className="app">
-      <div class='app__nav-banner'>
-        <div class='app__nav-banner__title'>
+      <div className='app__nav-banner'>
+        <div className='app__nav-banner__title'>
           Trading Waza
         </div>
-        <div class='app__nav-banner__icon'>
+        <div className='app__nav-banner__icon'>
           <MdAreaChart></MdAreaChart>
         </div>
         <div>
@@ -84,15 +84,15 @@ const App = () => {
           alignItems: 'stretch',
           justifyContent: 'start',
         }}>
-        <div class='app__indicator-chips-wrapper'>
-          <div class='app__indicator-chips-wrapper__indicator-chips'>
+        <div className='app__indicator-chips-wrapper'>
+          <div className='app__indicator-chips-wrapper__indicator-chips'>
             <IndicatorChips/>
           </div>
           <div>
             <Pagination count={2} variant="outlined" size="medium" color="primary"/>
           </div>
         </div>
-        <div class='app__tickers-table-wrapper'>
+        <div className='app__tickers-table-wrapper'>
           <Box>
             <TickerTable columns={columns} data={data}/>
           </Box>
