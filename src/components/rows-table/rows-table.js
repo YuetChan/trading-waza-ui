@@ -1,7 +1,8 @@
-import './ticker-table.scss';
+import './rows-table.scss';
+
 import { useTable } from "react-table";
 
-const TickerTable = ({columns, data}) => {
+const RowsTable = ({columns, data}) => {
   const {
     getTableProps, 
     getTableBodyProps, 
@@ -40,4 +41,4 @@ const TickerTable = ({columns, data}) => {
   );
 }
 
-export default TickerTable;
+export default RowsTable;

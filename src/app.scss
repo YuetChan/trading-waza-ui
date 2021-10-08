@@ -31,11 +31,12 @@
     }
   }
 
-  &__indicator-chips-wrapper {
+  &__indicator-filter-wrapper {
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
     
-    height: calc(100vh - 44px);
+    height: calc(100vh - 85px);
     max-width: 344px;
     min-width: 344px;
 
@@ -45,14 +46,16 @@
 
     background-color: whitesmoke;
 
-    &__indicator-chips { margin-bottom: 34px; }
+    &__indicator-filter { margin-bottom: 34px; }
   }
 
-  &__tickers-table-wrapper {
+  &__rows-table-wrapper {
     max-height: calc(100vh - 44px);
-    width: 977px;
-    padding: 0px 21px;
+    min-height: 533px;
+    width: 100%;
+    min-width: 770px;
 
+    padding: 0px 21px;
     overflow-y: auto;
 
     background-color: white;

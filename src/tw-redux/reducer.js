@@ -1,6 +1,6 @@
-import { UPDATE_FILTER_DONE, UPDATE_INDICATOR_PREFIX_DONE } from "./tw-actions";
+import { UPDATE_FILTER_DONE, UPDATE_INDICATOR_PREFIX_DONE } from "./actions";
   
-  const twReducer = (state, action) => {
+  const primaryReducer = (state, action) => {
     const { type, payload } = action;
 
     switch (type) {
@@ -16,4 +16,4 @@ import { UPDATE_FILTER_DONE, UPDATE_INDICATOR_PREFIX_DONE } from "./tw-actions";
     }
   };
   
-  export default twReducer;
+  export default primaryReducer;

@@ -1,9 +1,11 @@
-import TwService from "../services/tw-service";
+import MetaService from "../services/meta-service";
+import RowService from "../services/row-service";
+import SubscribeService from '../services/subscribe-service'
 
 export const updateFilter = (dateStr, indicators) => async (dispatch) => {
   let action = null;
   try {
-    const res = await TwService.getRowsByFilter(dateStr, indicators);
+    const res = await RowService.getRowsByFilter(dateStr, indicators);
     action = res.status === 200 ? updateFilterDone(res.rows) : updateFilterFailed();
   }catch (err) { 
     action = updateFilterFatal(err);
@@ -15,7 +17,7 @@ export const updateFilter = (dateStr, indicators) => async (dispatch) => {
 export const updateIndicatorPrefix = (prefix)  => async (dispatch) => {
   let action = null;
   try {
-    const res = await TwService.getIndicatorsByPrefix(prefix);
+    const res = await MetaService.getIndicatorsByPrefix(prefix);
     console.log(res.status)
     action = res.status === 200 ? updateIndicatorPrefixDone(res.data) : updateIndicatorPrefixFailed();
     console.log(res.data)

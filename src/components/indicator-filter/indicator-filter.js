@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AiOutlineFunction } from 'react-icons/ai';
 import { TiDeleteOutline } from 'react-icons/ti'
 
-import './indicator-chips.scss';
+import './indicator-filter.scss';
 
 import Chip from '@mui/material/Chip';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -12,7 +12,7 @@ import DateAdapter from '@material-ui/lab/AdapterDateFns';
 import DatePicker from '@material-ui/lab/DatePicker';
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 
-import { updateIndicatorPrefix } from '../../redux/tw-actions'
+import { updateIndicatorPrefix } from '../../tw-redux/actions'
 
 const IndicatorChips = () => {
   const indicatorOpts = useSelector(state => state.indicators);
@@ -52,7 +52,7 @@ const IndicatorChips = () => {
 
     indicatorChips.forEach(chip => {
       chipsElement.push(
-        <div className="indicator-chips__chips" key={chip.key}>
+        <div className="indicator-filter__chips" key={chip.key}>
           <Chip 
             sx ={{
               fontSize: '13px',
@@ -70,8 +70,8 @@ const IndicatorChips = () => {
   }
 
   return (
-    <div className='indicator-chips'>
-      <div className='indicator-chips__date-picker'>
+    <div className='indicator-filter'>
+      <div className='indicator-filter__date-picker'>
         <LocalizationProvider dateAdapter={DateAdapter}>
           <DatePicker
             label="Date"
@@ -82,7 +82,7 @@ const IndicatorChips = () => {
         </LocalizationProvider>
       </div>
 
-      <div className='indicator-chips__autocomplete'>
+      <div className='indicator-filter__autocomplete'>
         <Autocomplete
           disablePortal
           autoHighlight
@@ -93,10 +93,10 @@ const IndicatorChips = () => {
           }}
           renderInput={(params) => <TextField {...params} label="Indicator"/>}
         />
-        <AiOutlineFunction className="indicator-chips__autocomplete__icon"/>
+        <AiOutlineFunction className="indicator-filter__autocomplete__icon"/>
       </div>
 
-      <div className='indicator-chips__chips-wrapper'>   
+      <div className='indicator-filter__chips-wrapper'>   
         {chipsElement}
       </div> 
     </div>);

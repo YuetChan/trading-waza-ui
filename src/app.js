@@ -6,12 +6,10 @@ import Pagination from '@mui/material/Pagination';
 
 import { MdAreaChart } from 'react-icons/md';
 
-import { useDispatch, useSelector } from "react-redux";
-import { updateFilter, updateIndicatorPrefix } from './redux/tw-actions';
-
-import TickerTable from './components/ticker-table/tickers-table'
-import IndicatorChips from './components/indicator-chips/indicator-chips';
-import SubscribeDialog from './components/subscribe-dialog/subscribe-dialog'
+import RowTable from './components/rows-table/rows-table'
+import IndicatorFilter from './components/indicator-filter/indicator-filter';
+import SubscribeDialog from './components/subscribe-dialog/subscribe-dialog';
+import JoinUsCard from './components/join-us-card/join-us-card';
 
 const App = () => {
   const data = useMemo(() => [
@@ -36,33 +34,30 @@ const App = () => {
   const columns = useMemo(
     () => [{
         Header: 'Filtered Result',
-        columns: [
-          {
+        columns: [{
             Header: 'Ticker',
             accessor: 'ticker',
-          },
-          {
+          },{
             Header: 'Open',
             accessor: 'open',
-          },
-          {
+          },{
             Header: 'High',
             accessor: 'high',
-          },
-          {
+          },{
             Header: 'Close',
             accessor: 'close',
-          },
-          {
+          },{
             Header: 'Low',
             accessor: 'low',
-          },
-          {
+          },{
+            Header: 'Indicator',
+            accessor: 'indicator',
+          },{
             Header: 'Date',
             accessor: 'date'
           }
         ]
-    }], [])
+    }], []);
 
   return (
     <div className="app">
@@ -84,18 +79,21 @@ const App = () => {
           alignItems: 'stretch',
           justifyContent: 'start',
         }}>
-        <div className='app__indicator-chips-wrapper'>
-          <div className='app__indicator-chips-wrapper__indicator-chips'>
-            <IndicatorChips/>
+        <div className='app__indicator-filter-wrapper'>
+          <div className='app__indicator-filter-wrapper__indicator-filter'>
+            <IndicatorFilter/>
           </div>
           <div>
             <Pagination count={2} variant="outlined" size="medium" color="primary"/>
+            <br></br>
+            <br></br>
+          </div>
+          <div>
+            <JoinUsCard/>
           </div>
         </div>
-        <div className='app__tickers-table-wrapper'>
-          <Box>
-            <TickerTable columns={columns} data={data}/>
-          </Box>
+        <div className='app__rows-table-wrapper'>
+          <RowTable columns={columns} data={data}/>
         </div>
       </Box>  
     </div>

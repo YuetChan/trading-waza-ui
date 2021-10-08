@@ -1,0 +1,15 @@
+.join-us-card {
+    &__title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        h4 {
+            margin: 7px 0px;
+        }
+
+        &__icon {
+            transform: translate(0px, 1px);
+        }
+    }
+}
