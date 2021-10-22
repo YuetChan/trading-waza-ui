@@ -1,8 +1,9 @@
+import axios from 'axios';
+
 const getIndicatorsByPrefix = (prefix) => { 
-  return {
-    status: 200,
-    data: ['td_9', 'golden_cross_100', 'golden_cross_200']
-  };
+  console.log(prefix)
+
+  return axios.get('http://tradingwaza.com/api/tw-backend/meta-data/indicators', { params: { name: prefix }})
 }
 
 const MetaService = { getIndicatorsByPrefix };

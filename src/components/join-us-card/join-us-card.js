@@ -19,11 +19,13 @@ const JoinUsCard = () => {
           }}>
           <CardMedia
             component="img"
-            height="180"
+            height="150"
             image="https://i.ibb.co/BP3MmTn/Screenshot-2021-10-08-14-13-58.png"
             alt="Opps"
           />
-          <CardContent>
+          <CardContent sx={{
+            padding: '11px'
+          }}>
             <div class="join-us-card__title">
               <h4>Waza Squad Discord</h4>
               &nbsp;&nbsp;
@@ -32,7 +34,7 @@ const JoinUsCard = () => {
               </div>
             </div>
             <Typography variant="body2" color="text.secondary">
-              Join our discord community to discuss and share tips on trading and investing !
+              Join our discord community to discuss and share tips on trading and investing
             </Typography>
           </CardContent>
           <CardActions>

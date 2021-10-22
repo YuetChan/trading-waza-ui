@@ -4,6 +4,7 @@ import { AiOutlineFunction } from 'react-icons/ai';
 import { TiDeleteOutline } from 'react-icons/ti'
 
 import './indicator-filter.scss';
+import replaceUnderscoreWith from '../../../src/tw-utils/prettier'
 
 import Chip from '@mui/material/Chip';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -22,7 +23,10 @@ const IndicatorChips = () => {
   const [date, setDate] = useState(null);
 
   const dispatch = useDispatch();
-  useEffect(() => { dispatch(updateIndicatorPrefix('')); }, []);
+  useEffect(() => { 
+    console.log('called')
+    dispatch(updateIndicatorPrefix('')); 
+  }, []);
   useEffect(() => { resetChipsElement(); }, [indicatorChips]);
 
   const handleDatePick = (date) => { console.log(date); setDate(date)}
@@ -59,7 +63,7 @@ const IndicatorChips = () => {
               color: 'rgb(0, 116, 204)',
               backgroundColor: 'rgb(225, 236, 244)'
             }}
-            label={chip.label}
+            label={replaceUnderscoreWith(chip.label, ' ')}
             onDelete={handleChipDelete(chip.key)}
             deleteIcon={<TiDeleteOutline/>}
           />
@@ -77,7 +81,13 @@ const IndicatorChips = () => {
             label="Date"
             value={date}
             onChange={(val) => { handleDatePick(val); }}
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params) => 
+              <TextField 
+                sx={{
+                  width: '100%'
+                }}
+                {...params} />
+              }
           />
         </LocalizationProvider>
       </div>
@@ -87,9 +97,9 @@ const IndicatorChips = () => {
           disablePortal
           autoHighlight
           onInputChange={(event, val) => { handleOptSelect(val); }}
-          options={indicatorOpts}
+          options={indicatorOpts.map(opt => replaceUnderscoreWith(opt, ' '))}
           sx={{ 
-            width: '211px'
+            width: '275px'
           }}
           renderInput={(params) => <TextField {...params} label="Indicator"/>}
         />

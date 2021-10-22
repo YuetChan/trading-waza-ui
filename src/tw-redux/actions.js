@@ -15,10 +15,13 @@ export const updateFilter = (dateStr, indicators) => async (dispatch) => {
 };
 
 export const updateIndicatorPrefix = (prefix)  => async (dispatch) => {
+  
+
   let action = null;
   try {
     const res = await MetaService.getIndicatorsByPrefix(prefix);
     console.log(res.status)
+    console.log(res);
     action = res.status === 200 ? updateIndicatorPrefixDone(res.data) : updateIndicatorPrefixFailed();
     console.log(res.data)
   }catch (err) { 

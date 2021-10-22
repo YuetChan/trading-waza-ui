@@ -50,8 +50,8 @@ const App = () => {
             Header: 'Low',
             accessor: 'low',
           },{
-            Header: 'Indicator',
-            accessor: 'indicator',
+            Header: 'Change %',
+            accessor: 'change',
           },{
             Header: 'Date',
             accessor: 'date'
@@ -69,7 +69,7 @@ const App = () => {
           <MdAreaChart></MdAreaChart>
         </div>
         <div>
-          <SubscribeDialog/>
+          {/* <SubscribeDialog/> */}
         </div>
       </div>
       <Box
@@ -90,6 +90,7 @@ const App = () => {
           </div>
           <div>
             <JoinUsCard/>
+            <br></br>
           </div>
         </div>
         <div className='app__rows-table-wrapper'>
