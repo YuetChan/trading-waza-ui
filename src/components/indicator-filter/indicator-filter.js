@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AiOutlineFunction } from 'react-icons/ai';
 import { TiDeleteOutline } from 'react-icons/ti'
 
+
 import './indicator-filter.scss';
 import replaceUnderscoreWith from '../../../src/tw-utils/prettier'
 
 import Chip from '@mui/material/Chip';
-import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import DateAdapter from '@material-ui/lab/AdapterDateFns';
 import DatePicker from '@material-ui/lab/DatePicker';
@@ -31,23 +31,41 @@ const IndicatorChips = () => {
 
   const handleDatePick = (date) => { console.log(date); setDate(date)}
   const handleChipDelete = (key) => () => { setIndicatorChips(Object.assign([], indicatorChips.filter(chip => chip.key !== key))); };
-  const handleOptSelect = (opt) => {
+  const handleOptSelect = (event, opt) => {
     console.log('optSelect called')
-    setIndicatorChips(() => {
-      let changed = false;
+    console.log(event.type)
 
-      if(indicatorChips.filter(chip => chip.label === opt).length === 0 && opt.length) {
-        const lastIndex = indicatorChips.length - 1;
-        const key = lastIndex === -1 ? 0 : indicatorChips[lastIndex].key + 1 ;
+    if(event.type === 'change') { 
+      return ;
+    }
 
-        const newChip = { key: key, label: opt };
-        indicatorChips.push(newChip);
+    // if(event.type === 'keydown') {
 
-        changed = true;
-      }
+    // }
 
-      return changed ? Object.assign([], indicatorChips) : indicatorChips;
-    });
+    if(event.type === 'click' || event.type === 'keydown') {
+      setIndicatorChips(() => {
+        let changed = false;
+  
+        if(indicatorChips.filter(chip => chip.label === opt).length === 0 && opt.length) {
+          console.log('called')
+
+          const lastIndex = indicatorChips.length - 1;
+          const key = lastIndex === -1 ? 0 : indicatorChips[lastIndex].key + 1 ;
+  
+          const newChip = { key: key, label: opt };
+          indicatorChips.push(newChip);
+  
+          changed = true;
+        }
+  
+        return changed ? Object.assign([], indicatorChips) : indicatorChips;
+      });
+    }
+  }
+
+  const handleOptChange = (event) => {
+    console.log(event);
   }
 
   const resetChipsElement = () => {
@@ -96,13 +114,14 @@ const IndicatorChips = () => {
         <Autocomplete
           disablePortal
           autoHighlight
-          onInputChange={(event, val) => { handleOptSelect(val); }}
+          onInputChange={(event, val) => { handleOptSelect(event, val); }}
           options={indicatorOpts.map(opt => replaceUnderscoreWith(opt, ' '))}
           sx={{ 
             width: '275px'
           }}
           renderInput={(params) => <TextField {...params} label="Indicator"/>}
         />
+
         <AiOutlineFunction className="indicator-filter__autocomplete__icon"/>
       </div>
 
