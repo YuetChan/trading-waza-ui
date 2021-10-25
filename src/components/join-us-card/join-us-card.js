@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './join-us-card.scss';
 
-import { SiDiscord } from 'react-icons/si'
+import { MdTextsms } from 'react-icons/md'
 
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -27,18 +27,18 @@ const JoinUsCard = () => {
             padding: '11px'
           }}>
             <div class="join-us-card__title">
-              <h4>Waza Squad Discord</h4>
+              <h4>Waza SMS</h4>
               &nbsp;&nbsp;
               <div class="join-us-card__title__icon">
-                <SiDiscord/>
+                <MdTextsms/>
               </div>
             </div>
             <Typography variant="body2" color="text.secondary">
-              Join our discord community to discuss and share tips on trading and investing
+              Subscribe to Waza SMS for daily update notification
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small">Join Us Now</Button>
+            <Button size="small">SUBSCRIBE</Button>
           </CardActions>
         </Card>
       </div>)

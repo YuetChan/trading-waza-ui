@@ -1,4 +1,4 @@
-const replaceUnderscoreWith = (word, replacement) => {
+export  const replaceUnderscoreWith = (word, replacement) => {
     let prettierWord = '';
     for(let i = 0; i < word.length; i++) {
         if(word[i] === '_' && i !== word.length -1) {
@@ -12,4 +12,17 @@ const replaceUnderscoreWith = (word, replacement) => {
     return prettierWord;
 } 
 
-export default replaceUnderscoreWith;
+export  const capitalizeBy = (word, delimiter) => {
+    let prettierWord = '';
+    prettierWord = prettierWord + word[0].toUpperCase();
+
+    for(let i = 1; i < word.length; i++) {
+        if(word[i - 1] === delimiter) {
+            prettierWord = prettierWord + word[i].toUpperCase();
+        }else {
+            prettierWord = prettierWord + word[i];
+        }
+    }
+
+    return prettierWord;
+} 

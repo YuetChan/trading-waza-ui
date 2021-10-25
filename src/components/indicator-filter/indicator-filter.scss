@@ -1,7 +1,7 @@
 .indicator-filter {
   display: flex;
-  align-items: flex-start;
   flex-direction: column;
+  align-items: flex-start;
 
   &__date-picker {
     margin-bottom: 21px;
@@ -10,15 +10,31 @@
 
   &__autocomplete {
     display: flex;
-    align-items: center;
-    justify-content: start;
-        
-    margin-bottom: 23px;
+    flex-direction: column;
+    align-items: flex-start;    
 
-    &__icon{
-      margin-left: 21px;
-      font-size: 25px;
-      color: rgba(233, 30, 99, 1);
+    margin-bottom: 13px;
+
+    &__search {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      margin-bottom: 23px;
+    }
+  
+    &__btn { 
+      color: rgba(233, 30, 99, 0.7);
+      margin-left: 13px; 
+    }
+
+    &__checkboxes {
+      border: 1px solid rgba(44, 44, 44, 0.2);
+      border-radius: 4px;
+      max-height: 229px;
+
+      overflow-y: auto;
+      padding-left: 5px;
     }
   }
 
@@ -36,4 +52,7 @@
     margin: 7px 0px;
     margin-right: 5px;
   }
+
+
+
 }
