@@ -1,8 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import './app.scss';
-
-import Box from '@mui/material/Box';
-import Pagination from '@mui/material/Pagination';
 
 import { MdAreaChart } from 'react-icons/md';
 
@@ -12,7 +9,8 @@ import SubscribeDialog from './components/subscribe-dialog/subscribe-dialog';
 import JoinUsCard from './components/join-us-card/join-us-card';
 
 const App = () => {
-  const data = useMemo(() => [
+
+  const [rows, setRows] = useState([
     {
       ticker: 'AAPL',
       open: 140.00,
@@ -33,7 +31,7 @@ const App = () => {
 
   const columns = useMemo(
     () => [{
-        Header: 'Filtered Result',
+        Header: 'Filtered Result(Daily Chart Only)',
         columns: [{
             Header: 'Ticker',
             accessor: 'ticker',
@@ -72,31 +70,23 @@ const App = () => {
           {/* <SubscribeDialog/> */}
         </div>
       </div>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'stretch',
-          justifyContent: 'start',
-        }}>
+
+      <div className='app__layout'>
         <div className='app__indicator-filter-wrapper'>
           <div className='app__indicator-filter-wrapper__indicator-filter'>
             <IndicatorFilter/>
           </div>
-          <div>
-            <Pagination count={2} variant="outlined" size="medium" color="primary"/>
-            <br></br>
-            <br></br>
-          </div>
+
           <div>
             <JoinUsCard/>
             <br></br>
           </div>
         </div>
+
         <div className='app__rows-table-wrapper'>
-          <RowTable columns={columns} data={data}/>
+          <RowTable columns={columns} data={rows}/>
         </div>
-      </Box>  
+      </div> 
     </div>
   );
 }

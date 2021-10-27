@@ -49,6 +49,13 @@
     &__indicator-filter { margin-bottom: 34px; }
   }
 
+  &__layout {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: start;
+  }
+
   &__rows-table-wrapper {
     max-height: calc(100vh - 44px);
     min-height: 533px;

@@ -16,9 +16,15 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import TextField from '@mui/material/TextField';
 
-import { updateIndicatorPrefix } from '../../tw-redux/actions'
+import moment from 'moment';
+import 'moment-timezone';
+
+import { updateIndicatorPrefix, updateFilter } from '../../tw-redux/actions'
 
 const IndicatorChips = () => {
+
+  const currStr = moment().tz('America/New_York').format("YYYY-MM-DD");
+  console.log(currStr)
 
   const handleToggle = (indicator) => () => {
     const currentIdx = indicatorChecks.indexOf(indicator);
@@ -47,7 +53,7 @@ const IndicatorChips = () => {
   const [indicatorChecks, setIndicatorChecks] = useState([]);
   const [indicatorChips, setIndicatorChips] = useState([]);
   const [chipsElement, setChipsElement] = useState([]);
-  const [date, setDate] = useState(null);
+  const [daysAgo, setDaysAgo] = useState(0);
 
   const dispatch = useDispatch();
   useEffect(() => { dispatch(updateIndicatorPrefix('')); }, []);
@@ -88,7 +94,16 @@ const IndicatorChips = () => {
         );
   })
 
-  const handleDatePick = (date) => { console.log(date); setDate(date)}
+  const handleDateChange = (event) => { 
+    const selectedDateStr = event.target.value;
+    const selectedDate = moment(selectedDateStr).toDate();
+
+    const today = moment(moment(new Date()).tz('America/New_York').format("YYYY-MM-DD")).toDate();
+    const milisecInDay = 60 * 60 * 24 * 1000;
+
+    setDaysAgo((today - selectedDate) / milisecInDay);
+  }
+
   const handleChipDelete = (key, label) => () => { 
     const currentIdx = indicatorChecks.indexOf(label);
     const newChecks = [...indicatorChecks];
@@ -109,7 +124,8 @@ const IndicatorChips = () => {
   }
 
   const handleSearchClick = () => {
-    dispatch(updateIndicatorPrefix(''));
+    console.log(daysAgo, indicatorChecks)
+    dispatch(updateFilter(daysAgo, indicatorChecks));
   }
 
   const resetChipsElement = () => {
@@ -139,8 +155,10 @@ const IndicatorChips = () => {
     <div className='indicator-filter'>
       <div className='indicator-filter__date-picker'>
         <TextField
-          label="Date"
+          onChange={handleDateChange}
           id="date-picker"
+          defaultValue={moment().tz('America/New_York').format("YYYY-MM-DD")}
+          type="date"
           sx={{ width: '100%' }}
           InputProps={{
             endAdornment: <InputAdornment position="end">EST</InputAdornment>,
@@ -156,8 +174,8 @@ const IndicatorChips = () => {
               label="Indicator Prefix"
               onChange={handlePrefixChange}
              />
-            <IconButton >
-              <BsSearch className="indicator-filter__autocomplete__btn"/>
+            <IconButton onClick={handleSearchClick}>
+              <BsSearch className="indicator-filter__autocomplete__btn" />
             </IconButton>
           </div>
 

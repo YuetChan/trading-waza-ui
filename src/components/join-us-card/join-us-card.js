@@ -14,13 +14,13 @@ const JoinUsCard = () => {
     return (
       <div class="join-us-card">
         <Card sx={{ 
-          maxWidth: 275,
+          maxWidth: 267,
           textAlign: "left"
           }}>
           <CardMedia
             component="img"
-            height="150"
-            image="https://i.ibb.co/BP3MmTn/Screenshot-2021-10-08-14-13-58.png"
+            height="170"
+            image="https://i.ibb.co/LkDxCyH/Screenshot-2021-10-26-21-36-19.png"
             alt="Opps"
           />
           <CardContent sx={{

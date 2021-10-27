@@ -2,10 +2,10 @@ import MetaService from "../services/meta-service";
 import RowService from "../services/row-service";
 import SubscribeService from '../services/subscribe-service'
 
-export const updateFilter = (dateStr, indicators) => async (dispatch) => {
+export const updateFilter = (daysAgo, indicators) => async (dispatch) => {
   let action = null;
   try {
-    const res = await RowService.getRowsByFilter(dateStr, indicators);
+    const res = await RowService.getRowsByFilter(daysAgo, indicators);
     action = res.status === 200 ? updateFilterDone(res.rows) : updateFilterFailed();
   }catch (err) { 
     action = updateFilterFatal(err);
@@ -18,10 +18,7 @@ export const updateIndicatorPrefix = (prefix)  => async (dispatch) => {
   let action = null;
   try {
     const res = await MetaService.getIndicatorsByPrefix(prefix);
-    console.log(res.status)
-    console.log(res);
     action = res.status === 200 ? updateIndicatorPrefixDone(res.data.indicators.map(obj => obj.name)) : updateIndicatorPrefixFailed();
-    console.log(res.data.indicators.map(obj => obj.name));
   }catch (err) { 
     action = updateIndicatorPrefixFatal(err); 
   }
