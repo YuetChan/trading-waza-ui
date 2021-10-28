@@ -7,7 +7,8 @@ const getRowsByFilter = (daysAgo, indicators) => {
   return axios.get('http://tradingwaza.com/api/tw-backend/rows', {
     params:{
         indicators: indicators,
-        daysAgo: daysAgo
+        daysAgo: daysAgo,
+        pageSize: 8000
     },
     paramsSerializer: function(params) {
         return qs.stringify(params, {arrayFormat: 'repeat'})

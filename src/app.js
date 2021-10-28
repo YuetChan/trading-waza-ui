@@ -1,4 +1,6 @@
 import React, { useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+
 import './app.scss';
 
 import { MdAreaChart } from 'react-icons/md';
@@ -8,26 +10,27 @@ import IndicatorFilter from './components/indicator-filter/indicator-filter';
 import SubscribeDialog from './components/subscribe-dialog/subscribe-dialog';
 import JoinUsCard from './components/join-us-card/join-us-card';
 
+import moment from 'moment';
+import 'moment-timezone';
+
 const App = () => {
 
-  const [rows, setRows] = useState([
-    {
-      ticker: 'AAPL',
-      open: 140.00,
-      high: 142.40,
-      close: 138.10,
-      low: 137.96,
-      date: '09-09-2021'
-    },
-    {
-      ticker: 'OPEN',
-      open: 20.05,
-      high: 21.00,
-      close: 21.10,
-      low: 19.98,
-      date: '09-09-2021'
-    }
-  ]);
+  const rows = useSelector(state => {
+    return state.rows.map(row => {
+      const priceDetail = row.priceDetail;
+
+      return {
+        ticker: row.ticker.name,
+        date: moment(row.processedAt).tz('America/New_York').format("YYYY-MM-DD"),
+        change: priceDetail.change.toFixed(2),
+
+        open: priceDetail.open.toFixed(2),
+        high: priceDetail.high.toFixed(2),
+        close: priceDetail.close.toFixed(2),
+        low: priceDetail.low.toFixed(2)
+      };
+    });
+  });
 
   const columns = useMemo(
     () => [{
@@ -84,7 +87,7 @@ const App = () => {
         </div>
 
         <div className='app__rows-table-wrapper'>
-          <RowTable columns={columns} data={rows}/>
+          <RowTable columns={columns} data={rows.sort((a, b) => a.ticker.localeCompare(b.ticker))}/>
         </div>
       </div> 
     </div>

@@ -6,12 +6,15 @@ export const updateFilter = (daysAgo, indicators) => async (dispatch) => {
   let action = null;
   try {
     const res = await RowService.getRowsByFilter(daysAgo, indicators);
-    action = res.status === 200 ? updateFilterDone(res.rows) : updateFilterFailed();
+    console.log(res)
+
+    action = res.status === 200 ? updateFilterDone(res.data.rows) : updateFilterFailed();
   }catch (err) { 
     action = updateFilterFatal(err);
   }
   
   dispatch(action);
+  return {type: UPDATE_FILTER };
 };
 
 export const updateIndicatorPrefix = (prefix)  => async (dispatch) => {
