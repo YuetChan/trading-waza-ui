@@ -22,7 +22,6 @@ import 'moment-timezone';
 import { updateIndicatorPrefix, updateFilter } from '../../tw-redux/actions'
 
 const IndicatorChips = () => {
-
   const currStr = moment().tz('America/New_York').format("YYYY-MM-DD");
   console.log(currStr)
 

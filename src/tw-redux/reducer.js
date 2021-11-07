@@ -11,7 +11,7 @@ import { UPDATE_FILTER_DONE, UPDATE_INDICATOR_PREFIX_DONE } from "./actions";
   
       case UPDATE_INDICATOR_PREFIX_DONE:
         return { ...state, indicators: Object.assign([], payload) };
-  
+
       default:
         return state;
 

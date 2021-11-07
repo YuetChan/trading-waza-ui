@@ -7,7 +7,6 @@ import { MdAreaChart } from 'react-icons/md';
 
 import RowTable from './components/rows-table/rows-table'
 import IndicatorFilter from './components/indicator-filter/indicator-filter';
-import SubscribeDialog from './components/subscribe-dialog/subscribe-dialog';
 import JoinUsCard from './components/join-us-card/join-us-card';
 
 import moment from 'moment';
@@ -68,9 +67,6 @@ const App = () => {
         </div>
         <div className='app__nav-banner__icon'>
           <MdAreaChart></MdAreaChart>
-        </div>
-        <div>
-          {/* <SubscribeDialog/> */}
         </div>
       </div>
 
