@@ -17,7 +17,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import Typography from '@mui/material/Typography';
 
-import Input from 'react-phone-number-input/input'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 const SubscribeState = {
 	WAITING_SUBSCRIBE: "waiting-subscribe",
@@ -26,7 +27,7 @@ const SubscribeState = {
 }
 
 const JoinUsCard = () => {
-  const [subscribeState, setSubscribeState] = useState(SubscribeState.DONE);
+  const [subscribeState, setSubscribeState] = useState(SubscribeState.ENTER);
   const [phone, setPhone] = useState('');
 
   const [openSubscribe, setOpenSubscribe] = React.useState(false);
@@ -36,6 +37,11 @@ const JoinUsCard = () => {
     setOpenSubscribe(false); 
     setPhone('');
   };
+
+  const handleInputChangeSubscribe = (value) => { 
+    setPhone(value)
+  }
+
   const handleSubmitSubscribe = () => {
     setSubscribeState(SubscribeState.WAITING_SUBSCRIBE)
 
@@ -131,17 +137,20 @@ const JoinUsCard = () => {
             <br></br>
             <div className="join-us-card__phone-input-wrapper">
               <div className="join-us-card__phone-input-wrapper__phone-input-row">
-                + 1 &nbsp;&nbsp;
-                <Input
-                  className="join-us-card__phone-input-wrapper__phone-input-row__phone-input"
-                  country="US"
+                <PhoneInput
+                  // className="join-us-card__phone-input-wrapper__phone-input-row__phone-input"
+                  onlyCountries={['us']}
+                  // disableDropdown={true} 
+                  // disableCountryCode={true}
+                  // enableAreaCodes={true}
+                  placeholder="(702) 123-4567"
                   value={phone}
                   onChange={setPhone}
-                  />
+                />
               </div>
               &nbsp;&nbsp;&nbsp;
               <div 
-                hidden={subscribeState === SubscribeState.WAITING_SUBSCRIBE}
+                hidden={subscribeState !== SubscribeState.WAITING_SUBSCRIBE}
                 className="join-us-card__phone-input-wrapper__phone-input-row__loader">
                 <CircularProgress size={35}/>
               </div>  
@@ -153,7 +162,6 @@ const JoinUsCard = () => {
           </DialogActions>
         </form>
       </Dialog>
-
 
       {/* <Dialog open={openSubscribe} onClose={handleCloseSubscribe}>
         <form onSubmit={handleSubmitVerify}>

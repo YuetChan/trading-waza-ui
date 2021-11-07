@@ -1,4 +1,20 @@
-const subscribeViaEmail = (useremail) => { }
+import axios from "axios";
 
-const SubscribeService = { subscribeViaEmail };
+// http://tradingwaza.com/api/tw-node
+const subscribeToPhoneList = (phone) => {
+    return axios.post('http://localhost:3000/phones', { 
+      phone: phone
+    });
+}
+
+const verifyPhone = (phone, code) => {
+    return axios.get('http://localhost:3000/phones', { 
+      params: { 
+        phone: phone,  
+        code: code
+      }
+    })
+}
+
+const SubscribeService = { subscribeToPhoneList, verifyPhone };
 export default SubscribeService;

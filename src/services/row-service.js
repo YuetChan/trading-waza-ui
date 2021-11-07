@@ -5,7 +5,7 @@ const getRowsByFilter = (daysAgo, indicators) => {
   console.log(indicators)
 
   return axios.get('http://tradingwaza.com/api/tw-backend/rows', {
-    params:{
+    params: {
         indicators: indicators,
         daysAgo: daysAgo,
         pageSize: 8000
