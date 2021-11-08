@@ -20,6 +20,8 @@ import Typography from '@mui/material/Typography';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 
+import SubscribeService from '../../services/subscribe-service'
+
 const SubscribeState = {
 	WAITING_SUBSCRIBE: "waiting-subscribe",
   WAITING_VERIFY: "waiting-verify",
@@ -38,13 +40,18 @@ const JoinUsCard = () => {
     setPhone('');
   };
 
-  const handleInputChangeSubscribe = (value) => { 
-    setPhone(value)
-  }
+  const handleSubmitSubscribe = async (event) => {
+    event.preventDefault();
+    setSubscribeState(SubscribeState.WAITING_SUBSCRIBE);
 
-  const handleSubmitSubscribe = () => {
-    setSubscribeState(SubscribeState.WAITING_SUBSCRIBE)
+    try{
+      const res = await SubscribeService.subscribeToPhoneList(phone);
+      console.log(res);
+    }catch (err) {
+      
+    }
 
+    
     //submit -> setPhone empty -> open verify dialog
   };
 
@@ -103,13 +110,11 @@ const JoinUsCard = () => {
         }}>
         <CardMedia
           component="img"
-          height="170"
           image="https://i.ibb.co/LkDxCyH/Screenshot-2021-10-26-21-36-19.png"
           alt="Opps"
+          height="170"
         />
-        <CardContent sx={{
-          padding: '11px'
-        }}>
+        <CardContent sx={{padding: '11px'}}>
           <div class="join-us-card__title">
             <h4>Waza SMS</h4>
             &nbsp;&nbsp;
@@ -138,27 +143,23 @@ const JoinUsCard = () => {
             <div className="join-us-card__phone-input-wrapper">
               <div className="join-us-card__phone-input-wrapper__phone-input-row">
                 <PhoneInput
-                  // className="join-us-card__phone-input-wrapper__phone-input-row__phone-input"
-                  onlyCountries={['us']}
-                  // disableDropdown={true} 
-                  // disableCountryCode={true}
-                  // enableAreaCodes={true}
+                  country={'us'} onlyCountries={['us']}
+                  disableDropdown={true} disableCountryCode={true}
                   placeholder="(702) 123-4567"
-                  value={phone}
-                  onChange={setPhone}
+                  value={phone} onChange={setPhone}
                 />
               </div>
               &nbsp;&nbsp;&nbsp;
               <div 
-                hidden={subscribeState !== SubscribeState.WAITING_SUBSCRIBE}
-                className="join-us-card__phone-input-wrapper__phone-input-row__loader">
+                className="join-us-card__phone-input-wrapper__phone-input-row__loader" 
+                hidden={subscribeState !== SubscribeState.WAITING_SUBSCRIBE}>
                 <CircularProgress size={35}/>
               </div>  
             </div>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseSubscribe}>Cancel</Button>
-            <Button type="submit">Subscribe</Button>
+            <Button type="submit" disabled={phone.length < 10}>Subscribe</Button>
           </DialogActions>
         </form>
       </Dialog>

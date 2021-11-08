@@ -1,6 +1,5 @@
 import MetaService from "../services/meta-service";
 import RowService from "../services/row-service";
-import SubscribeService from '../services/subscribe-service'
 
 export const updateFilter = (daysAgo, indicators) => async (dispatch) => {
   let action = null;
