@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './join-us-card.scss';
 
 import { MdTextsms } from 'react-icons/md'
@@ -23,8 +23,7 @@ import 'react-phone-input-2/lib/style.css'
 import SubscribeService from '../../services/subscribe-service'
 
 const SubscribeState = {
-	WAITING_SUBSCRIBE: "waiting-subscribe",
-  WAITING_VERIFY: "waiting-verify",
+	WAITING: "waiting",
 	ENTER: "enter",
 }
 
@@ -34,36 +33,71 @@ const JoinUsCard = () => {
 
   const [openSubscribe, setOpenSubscribe] = React.useState(false);
 
-  const handleClickOpenSubscribe = () => { setOpenSubscribe(true); };
+  const handleOpenSubscribe = () => { setOpenSubscribe(true); };
   const handleCloseSubscribe = () => { 
+    setSubscribeState(SubscribeService.ENTER);
     setOpenSubscribe(false); 
+
     setPhone('');
   };
 
   const handleSubmitSubscribe = async (event) => {
     event.preventDefault();
-    setSubscribeState(SubscribeState.WAITING_SUBSCRIBE);
+    setSubscribeState(SubscribeState.WAITING);
 
     try{
-      const res = await SubscribeService.subscribeToPhoneList(phone);
-      console.log(res);
+      const res = await SubscribeService.subscribeToPhoneList('1' + phone);
+
+      const msg = res.data.message;
+      if(msg.includes('succeeded')) {
+        setSubscribeState(SubscribeService.ENTER);
+        setOpenSubscribe(false); 
+
+        handleOpenVerify();
+      }else {
+        window.confirm('Subscribe failed.\nAlready subscribed.')
+      }
     }catch (err) {
-      
+      window.confirm('Subscribe failed.\nOpps, something is wrong.')
+      console.log(err);
     }
 
-    
-    //submit -> setPhone empty -> open verify dialog
+    setSubscribeState(SubscribeState.ENTER);
   };
 
+  const [verifyState, setVerifyState] = useState(SubscribeState.ENTER);
   const [codeCache, setCodeCache] = React.useState('');
 
   const [openVerify, setOpenVerify] = React.useState(false);
 
+  const handleOpenVerify = () => { setOpenVerify(true); }
   const handleCloseVerify = () => { 
     setOpenVerify(false); 
+
     setCodeCache('');
+    setPhone('');
   };
-  const handleResendverify = () => { }
+
+  const handleResendVerify = async (event) => {
+    event.preventDefault();
+    setVerifyState(SubscribeService.WAITING);
+
+    try{
+      const res = await SubscribeService.subscribeToPhoneList('1' + phone);
+
+      console.log(res);
+      const msg = res.data.message;
+      if(!msg.includes('succeeded')) {
+        window.confirm("Resend failed.\nOpps, something is wrong.");
+      }
+      console.log('called');
+    }catch (err) {
+      window.confirm("Resend failed.\nOpps, something is wrong.");
+      console.log(err);
+    }
+
+    setVerifyState(SubscribeService.ENTER);
+  }
 
   const handleChangeVerify = (event) => {
     const value = event.target.value;
@@ -81,33 +115,36 @@ const JoinUsCard = () => {
     }
   }
 
-  const handleSubmitVerify = () => {};
+  const handleSubmitVerify = async (event) => {
+    event.preventDefault();
+    setVerifyState(SubscribeService.WAITING);
 
+    try{
+      const res = await SubscribeService.verifyPhone('1' + phone, codeCache)
 
-  // const validationSchema = yup.object({
-  //   phone: yup
-  //     .string('Enter your phone number')
-  //     .email('Enter a valid phone number')
-  //     .required('Phone number is required')
-  // });
+      const status = res.data.status;
+      const msg = res.data.message;
+      console.log(res);
+      if(status === 201 || msg.includes('confirmed')) {
+        window.confirm('Phone Verified');
 
-  // const formik = useFormik({
-  //   initialValues: { phone: '' },
-  //   validationSchema: validationSchema,
+        setOpenVerify(false); 
+        setCodeCache('');
+      }else {
+        window.confirm('Verification failed.\nIncorrect code.');
+      }
+      console.log('called');
+    }catch (err) {
+      window.confirm('Verification failed.\nOpps, something is wrong.');
+      console.log(err);
+    }
 
-  //   onSubmitSubscribe: (values) => {
-  //     setOpenSubscribe(false);
-  //     formik.setTouched({... formik.touched, ['phone']: false });
-  //     formik.setValues({... formik.values, phone: ''});
-  //   },
-  // });
+    setVerifyState(SubscribeService.ENTER);
+  };
 
   return (
     <div class="join-us-card">
-      <Card sx={{ 
-        maxWidth: 273,
-        textAlign: "left"
-        }}>
+      <Card sx={{maxWidth: 273, textAlign: "left"}}>
         <CardMedia
           component="img"
           image="https://i.ibb.co/LkDxCyH/Screenshot-2021-10-26-21-36-19.png"
@@ -127,7 +164,7 @@ const JoinUsCard = () => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" onClick={handleClickOpenSubscribe}>SUBSCRIBE</Button>
+          <Button size="small" onClick={handleOpenSubscribe}>SUBSCRIBE</Button>
         </CardActions>
       </Card>
 
@@ -152,7 +189,7 @@ const JoinUsCard = () => {
               &nbsp;&nbsp;&nbsp;
               <div 
                 className="join-us-card__phone-input-wrapper__phone-input-row__loader" 
-                hidden={subscribeState !== SubscribeState.WAITING_SUBSCRIBE}>
+                hidden={subscribeState !== SubscribeState.WAITING}>
                 <CircularProgress size={35}/>
               </div>  
             </div>
@@ -164,7 +201,7 @@ const JoinUsCard = () => {
         </form>
       </Dialog>
 
-      {/* <Dialog open={openSubscribe} onClose={handleCloseSubscribe}>
+      <Dialog open={openVerify} onClose={handleCloseSubscribe}>
         <form onSubmit={handleSubmitVerify}>
           <DialogTitle>Verify Phone Number</DialogTitle>
           <DialogContent>
@@ -185,18 +222,20 @@ const JoinUsCard = () => {
                 />
               </div>
               &nbsp;&nbsp;&nbsp;
-              <div className="join-us-card__code-input-wrapper__code-input-row__loader">
+              <div 
+                  className="join-us-card__code-input-wrapper__code-input-row__loader"
+                  hidden={verifyState !== SubscribeState.WAITING}>
                 <CircularProgress size={35}/>
               </div>  
             </div>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseVerify}>Cancel</Button>
-            <Button onClick={handleCloseSubscribe}>Resend</Button>
-            <Button type="submit">Verify</Button>
+            <Button onClick={handleResendVerify}>Resend</Button>
+            <Button type="submit" disabled={codeCache.length < 6}>Verify</Button>
           </DialogActions>
         </form>
-      </Dialog> */}
+      </Dialog>
 
     </div>)
 }
