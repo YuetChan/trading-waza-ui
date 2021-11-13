@@ -21,10 +21,7 @@ import 'moment-timezone';
 
 import { updateIndicatorPrefix, updateFilter } from '../../tw-redux/actions'
 
-const IndicatorChips = () => {
-  const currStr = moment().tz('America/New_York').format("YYYY-MM-DD");
-  console.log(currStr)
-
+const IndicatorFilter = () => {
   const handleToggle = (indicator) => () => {
     const currentIdx = indicatorChecks.indexOf(indicator);
     const newChecks = [...indicatorChecks];
@@ -84,6 +81,7 @@ const IndicatorChips = () => {
               disableRipple
               inputProps={{ 'aria-labelledby': labelId }}
             />
+
             <ListItemText 
               sx={{color: "rgb(33, 33, 33)"}}
               id={labelId} 
@@ -122,13 +120,9 @@ const IndicatorChips = () => {
     }
   }
 
-  const handleSearchClick = () => {
-    console.log(daysAgo, indicatorChecks)
-    dispatch(updateFilter(daysAgo, indicatorChecks));
-  }
+  const handleSearchClick = () => { dispatch(updateFilter(daysAgo, indicatorChecks)); }
 
   const resetChipsElement = () => {
-    console.log('resetChipElement called')
     chipsElement.splice(0, chipsElement.length);
 
     indicatorChips.forEach(chip => {
@@ -184,7 +178,6 @@ const IndicatorChips = () => {
             </List>
           </div>
         </div>
-
       </div>
 
       <div className='indicator-filter__chips-wrapper'>   
@@ -193,4 +186,4 @@ const IndicatorChips = () => {
     </div>);
 }
 
-export default IndicatorChips;
+export default IndicatorFilter;

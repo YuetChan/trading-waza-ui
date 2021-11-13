@@ -63,10 +63,7 @@ const App = () => {
     <div className="app">
       <div className='app__nav-banner'>
         <div className='app__nav-banner__title'>
-          Trading Waza
-        </div>
-        <div className='app__nav-banner__icon'>
-          <MdAreaChart></MdAreaChart>
+          Trading Waza  .Beta
         </div>
       </div>
 

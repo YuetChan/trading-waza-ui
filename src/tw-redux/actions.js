@@ -5,7 +5,6 @@ export const updateFilter = (daysAgo, indicators) => async (dispatch) => {
   let action = null;
   try {
     const res = await RowService.getRowsByFilter(daysAgo, indicators);
-    console.log(res)
 
     action = res.status === 200 ? updateFilterDone(res.data.rows) : updateFilterFailed();
   }catch (err) { 

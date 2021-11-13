@@ -22,125 +22,181 @@ import 'react-phone-input-2/lib/style.css'
 
 import SubscribeService from '../../services/subscribe-service'
 
-const SubscribeState = {
+const CardState = {
 	WAITING: "waiting",
 	ENTER: "enter",
 }
 
 const JoinUsCard = () => {
-  const [subscribeState, setSubscribeState] = useState(SubscribeState.ENTER);
+  const [subscribeCardState, setSubscribeCardState] = useState(CardState.ENTER);
   const [phone, setPhone] = useState('');
 
-  const [openSubscribe, setOpenSubscribe] = React.useState(false);
+  const [isSubscribeCardOpen, setSubscribeCardOpen] = React.useState(false);
 
-  const handleOpenSubscribe = () => { setOpenSubscribe(true); };
-  const handleCloseSubscribe = () => { 
-    setSubscribeState(SubscribeService.ENTER);
-    setOpenSubscribe(false); 
+  const handleSubscribeCardOpen = () => {
+    console.log('handleSubscribeCardOpen');
+    setSubscribeCardOpen(true);
+  }
+  const handleSubscribeCardClose = () => { 
+    console.log('handleSubscribeCardClose');
+    setSubscribeCardState(CardState.ENTER);
+    setSubscribeCardOpen(false); 
 
     setPhone('');
   };
 
-  const handleSubmitSubscribe = async (event) => {
+  const handleSubscribeCardSubmit = async (event) => {
+    console.log('handleSubscribeCardSubmit');
     event.preventDefault();
-    setSubscribeState(SubscribeState.WAITING);
 
-    try{
-      const res = await SubscribeService.subscribeToPhoneList('1' + phone);
+    subscribeCardStateDecorator(async () => {
+      let confirmMsg = '';
 
-      const msg = res.data.message;
-      if(msg.includes('succeeded')) {
-        setSubscribeState(SubscribeService.ENTER);
-        setOpenSubscribe(false); 
+      try{
+        const res = await SubscribeService.subscribeToPhoneList('1' + phone);
+        
+        const status = res.data.status;
+        const msg = res.data.message;
+        if(status === 429) {
+          confirmMsg = 'Excceeded rate limit.\nPlease try again later.';
+        }else if(!msg.includes('succeeded')) {
+          if(msg.includes('confirmed')) {
+            confirmMsg = 'Resend failed.\nAlready subscribed.'
+          }else {
+            confirmMsg = 'Resend failed\nOpps, something is wrong'
+          }
 
-        handleOpenVerify();
-      }else {
-        window.confirm('Subscribe failed.\nAlready subscribed.')
+        }else {
+          setSubscribeCardState(CardState.ENTER);
+          setSubscribeCardOpen(false); 
+  
+          handleVerifyCardOpen();
+        }
+  
+      }catch (err) {
+        confirmMsg = 'Subscribe failed.\nOpps, something is wrong.';
+        console.log(err);
       }
-    }catch (err) {
-      window.confirm('Subscribe failed.\nOpps, something is wrong.')
-      console.log(err);
-    }
 
-    setSubscribeState(SubscribeState.ENTER);
+      if(confirmMsg !== '') {
+        window.confirm(confirmMsg);
+      }
+    });
   };
 
-  const [verifyState, setVerifyState] = useState(SubscribeState.ENTER);
-  const [codeCache, setCodeCache] = React.useState('');
-
-  const [openVerify, setOpenVerify] = React.useState(false);
-
-  const handleOpenVerify = () => { setOpenVerify(true); }
-  const handleCloseVerify = () => { 
-    setOpenVerify(false); 
-
-    setCodeCache('');
-    setPhone('');
-  };
-
-  const handleResendVerify = async (event) => {
-    event.preventDefault();
-    setVerifyState(SubscribeService.WAITING);
-
-    try{
-      const res = await SubscribeService.subscribeToPhoneList('1' + phone);
-
-      console.log(res);
-      const msg = res.data.message;
-      if(!msg.includes('succeeded')) {
-        window.confirm("Resend failed.\nOpps, something is wrong.");
-      }
-      console.log('called');
-    }catch (err) {
-      window.confirm("Resend failed.\nOpps, something is wrong.");
-      console.log(err);
-    }
-
-    setVerifyState(SubscribeService.ENTER);
+  const subscribeCardStateDecorator = func => {
+    setSubscribeCardState(CardState.WAITING);
+    func();
+    setSubscribeCardState(CardState.ENTER);
   }
 
-  const handleChangeVerify = (event) => {
+
+  const [verifyCardState, setVerifyCardState] = useState(CardState.ENTER);
+  const [code, setCode] = React.useState('');
+
+  const [isVerifyCardOpen, setVerifyCardOpen] = React.useState(false);
+
+  const handleVerifyCardOpen = () => {
+    console.log('handleVerifyCardOpen');
+    setVerifyCardOpen(true); 
+  }
+  const handleVerifyCardClose = () => { 
+    console.log('handleVerifyCardClose');
+
+    setVerifyCardOpen(false);
+    setPhone('');
+    setCode('');
+  };
+
+  const handleResend = async () => {
+    console.log('handleResendClick');
+    subscribeCardStateDecorator(async () => {
+      let confirmMsg = '';
+
+      try{
+        const res = await SubscribeService.subscribeToPhoneList('1' + phone);
+
+        const status = res.data.status;
+        const msg = res.data.message;
+        if(status === 429) {
+          confirmMsg = 'Excceeded rate limit.\nPlease try again later.';
+        }else if(!msg.includes('succeeded')) {
+          if(msg.includes('confirmed')) {
+            confirmMsg = 'Resend failed.\nAlready subscribed.'
+          }else {
+            confirmMsg = 'Resend failed\nOpps, something is wrong'
+          }
+
+        }else {
+
+        }
+      }catch (err) {
+        confirmMsg = 'Resend failed.\nOpps, something is wrong.';
+        console.log(err);
+      }
+
+      if(confirmMsg !== '') {
+        window.confirm(confirmMsg);
+      }
+    });
+  }
+
+  const handleVerifyCardInputChange = (event) => {
+    console.log('handleVerifyCardInputChange')
     const value = event.target.value;
 
     const isNum = value.match(/^[0-9]+$/) != null;
     const isMaxLength = value.length > 6;
     if(isMaxLength) {
-      event.target.value = codeCache;
+      event.target.value = code;
     }else {
       if(isNum) {
-        setCodeCache(value);
+        setCode(value);
       }else {
-        event.target.value = codeCache;
+        event.target.value = code;
       }
+
     }
   }
 
-  const handleSubmitVerify = async (event) => {
+  const handleVerifyCardSubmit = async (event) => {
+    console.log('handleVerifyCardSubmit');
     event.preventDefault();
-    setVerifyState(SubscribeService.WAITING);
 
-    try{
-      const res = await SubscribeService.verifyPhone('1' + phone, codeCache)
+    verifyCardStateDecorator(async () => {
+      let confirmMsg = '';
 
-      const status = res.data.status;
-      const msg = res.data.message;
-      console.log(res);
-      if(status === 201 || msg.includes('confirmed')) {
-        window.confirm('Phone Verified');
+      try{
+        const res = await SubscribeService.verifyPhone('1' + phone, code)
+  
+        const status = res.data.status;
+        if(status === 201) {
+          setVerifyCardOpen(false); 
+          setCode('');
 
-        setOpenVerify(false); 
-        setCodeCache('');
-      }else {
-        window.confirm('Verification failed.\nIncorrect code.');
+          confirmMsg = 'Phone Verified';
+        }else if(status === 429){
+          confirmMsg = 'Excceeded rate limit.\nPlease try again later';
+        }else {
+          confirmMsg = 'Verification failed.\nIncorrect code/Unknown.';
+        }
+
+      }catch (err) {
+        confirmMsg = 'Verification failed.\nOpps, something is wrong.';
+        console.log(err);
       }
-      console.log('called');
-    }catch (err) {
-      window.confirm('Verification failed.\nOpps, something is wrong.');
-      console.log(err);
-    }
 
-    setVerifyState(SubscribeService.ENTER);
+      if(confirmMsg !== '') {
+        window.confirm(confirmMsg);
+      }
+    })
   };
+
+  const verifyCardStateDecorator = (func) => {
+    setVerifyCardState(CardState.WAITING);
+    func();
+    setVerifyCardState(CardState.ENTER);
+  }
 
   return (
     <div class="join-us-card">
@@ -151,6 +207,7 @@ const JoinUsCard = () => {
           alt="Opps"
           height="170"
         />
+        
         <CardContent sx={{padding: '11px'}}>
           <div class="join-us-card__title">
             <h4>Waza SMS</h4>
@@ -163,14 +220,16 @@ const JoinUsCard = () => {
             Subscribe to Waza SMS for daily update notification
           </Typography>
         </CardContent>
+
         <CardActions>
-          <Button size="small" onClick={handleOpenSubscribe}>SUBSCRIBE</Button>
+          <Button size="small" onClick={handleSubscribeCardOpen}>SUBSCRIBE</Button>
         </CardActions>
       </Card>
 
-      <Dialog open={openSubscribe} onClose={handleCloseSubscribe}>
-        <form onSubmit={handleSubmitSubscribe}>
+      <Dialog open={isSubscribeCardOpen} onClose={handleSubscribeCardClose}>
+        <form onSubmit={handleSubscribeCardSubmit}>
           <DialogTitle>Subscribe (Only available for US number)</DialogTitle>
+
           <DialogContent>
             <DialogContentText>
               To subscribe to daily update notification, please enter your phone number here. 
@@ -189,21 +248,23 @@ const JoinUsCard = () => {
               &nbsp;&nbsp;&nbsp;
               <div 
                 className="join-us-card__phone-input-wrapper__phone-input-row__loader" 
-                hidden={subscribeState !== SubscribeState.WAITING}>
+                hidden={subscribeCardState !== CardState.WAITING}>
                 <CircularProgress size={35}/>
               </div>  
             </div>
           </DialogContent>
+
           <DialogActions>
-            <Button onClick={handleCloseSubscribe}>Cancel</Button>
+            <Button onClick={handleSubscribeCardClose}>Cancel</Button>
             <Button type="submit" disabled={phone.length < 10}>Subscribe</Button>
           </DialogActions>
         </form>
       </Dialog>
 
-      <Dialog open={openVerify} onClose={handleCloseSubscribe}>
-        <form onSubmit={handleSubmitVerify}>
+      <Dialog open={isVerifyCardOpen} onClose={handleVerifyCardClose}>
+        <form onSubmit={handleVerifyCardSubmit}>
           <DialogTitle>Verify Phone Number</DialogTitle>
+
           <DialogContent>
             <DialogContentText>
               To verify phone number for subscription, please enter the 6-digit verification code below.
@@ -218,21 +279,22 @@ const JoinUsCard = () => {
                     return false;
                   }}
                   className="join-us-card__code-input-wrapper__code-input-row__code-input"
-                  onChange={handleChangeVerify}
+                  onChange={handleVerifyCardInputChange}
                 />
               </div>
               &nbsp;&nbsp;&nbsp;
               <div 
                   className="join-us-card__code-input-wrapper__code-input-row__loader"
-                  hidden={verifyState !== SubscribeState.WAITING}>
+                  hidden={verifyCardState !== CardState.WAITING}>
                 <CircularProgress size={35}/>
               </div>  
             </div>
           </DialogContent>
+
           <DialogActions>
-            <Button onClick={handleCloseVerify}>Cancel</Button>
-            <Button onClick={handleResendVerify}>Resend</Button>
-            <Button type="submit" disabled={codeCache.length < 6}>Verify</Button>
+            <Button onClick={handleVerifyCardClose}>Cancel</Button>
+            <Button onClick={handleResend}>Resend</Button>
+            <Button type="submit" disabled={code.length < 6}>Verify</Button>
           </DialogActions>
         </form>
       </Dialog>
