@@ -1,6 +1,8 @@
+import { useSelector } from 'react-redux';
 import './rows-table.scss';
 
 import { useTable } from 'react-table';
+import { CircularProgress } from '@mui/material';
 
 const RowsTable = ({columns, data}) => {
   const {

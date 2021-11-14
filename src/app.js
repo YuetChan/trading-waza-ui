@@ -1,9 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 import './app.scss';
-
-import { MdAreaChart } from 'react-icons/md';
 
 import RowTable from './components/rows-table/rows-table'
 import IndicatorFilter from './components/indicator-filter/indicator-filter';
@@ -12,7 +10,16 @@ import JoinUsCard from './components/join-us-card/join-us-card';
 import moment from 'moment';
 import 'moment-timezone';
 
+import LinearProgress from '@mui/material/LinearProgress';
+
 const App = () => {
+  const loader = useSelector(state => {
+    if(state.tableLoading) {
+      return <LinearProgress/>
+    }else {
+      return <LinearProgress variant="determinate" value={100}/>;
+    }
+  });
 
   const rows = useSelector(state => {
     return state.rows.map(row => {
@@ -61,11 +68,13 @@ const App = () => {
 
   return (
     <div className="app">
+      {loader}
       <div className='app__nav-banner'>
         <div className='app__nav-banner__title'>
           Trading Waza  .Beta
         </div>
       </div>
+
 
       <div className='app__layout'>
         <div className='app__indicator-filter-wrapper'>
