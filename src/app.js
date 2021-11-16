@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 import './app.scss';
@@ -7,12 +7,20 @@ import RowTable from './components/rows-table/rows-table'
 import IndicatorFilter from './components/indicator-filter/indicator-filter';
 import JoinUsCard from './components/join-us-card/join-us-card';
 
+import TrackingService from './services/tracking-service';
+
 import moment from 'moment';
 import 'moment-timezone';
 
 import LinearProgress from '@mui/material/LinearProgress';
 
 const App = () => {
+  
+  useEffect(() => {
+    TrackingService.initGA()
+    TrackingService.PageView();
+  }, []);
+
   const loader = useSelector(state => {
     if(state.tableLoading) {
       return <LinearProgress/>

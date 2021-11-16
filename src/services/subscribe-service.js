@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// http://tradingwaza.com/api/tw-node
 const subscribeToPhoneList = (phone) => {
     return axios.post('http://tradingwaza.com/api/tw-backend-smsl-mgm/phones', { 
       phone: phone
