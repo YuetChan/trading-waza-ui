@@ -1,14 +1,15 @@
 FROM node:15.7.0-alpine3.11 AS build
-WORKDIR /build
 
-COPY package.json package.json
-COPY package-lock.json package-lock.json
-RUN npm ci
+WORKDIR /app
+COPY package*.json ./
 
-COPY public/ public
-COPY src/ src
-RUN npm run build
+RUN npm install
 
-FROM httpd:alpine
-WORKDIR /var/www/html
-COPY --from=build /build/build/ .
+COPY . .
+
+RUN npm run build --production
+RUN npm install -g serve
+
+EXPOSE 3000
+
+CMD serve -s build
