@@ -1,6 +1,5 @@
 table {
-    margin: 0px 21px;
-    width: 95%;
+    width: 100%;
     color: whitesmoke;
 
     border-collapse: collapse; 
@@ -19,4 +18,10 @@ pre {
 
     line-height: 140%;
     counter-reset: line-numbering;
+}
+
+@media only screen and (max-width: 600px) {
+    pre {
+        min-width: 0px;
+    }
 }

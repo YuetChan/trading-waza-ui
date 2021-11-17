@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { isMobile } from 'react-device-detect';
+import { BiFilter } from 'react-icons/bi';
 
 import './app.scss';
 
@@ -13,6 +13,8 @@ import TrackingService from './services/tracking-service';
 import moment from 'moment';
 import 'moment-timezone';
 
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
 import LinearProgress from '@mui/material/LinearProgress';
 
 const App = () => {
@@ -47,6 +49,11 @@ const App = () => {
     });
   });
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const handleMobileFilterClick = () => setDrawerOpen(true);
+  const handleMobileFilterClose = () => setDrawerOpen(false)
+
   const columns = useMemo(
     () => [{
         Header: 'Filtered Result(Daily Chart Only)',
@@ -68,57 +75,55 @@ const App = () => {
           },{
             Header: 'Change %',
             accessor: 'change',
-          },{
-            Header: 'Date',
-            accessor: 'date'
           }
         ]
     }], []);
 
-    const mobileColumns = useMemo(
-      () => [{
-          Header: 'Filtered Result(Daily Chart Only)',
-          columns: [{
-              Header: 'Ticker',
-              accessor: 'ticker',
-            },{
-              Header: 'Open',
-              accessor: 'open',
-            },{
-              Header: 'Close',
-              accessor: 'close',
-            },{
-              Header: 'Change %',
-              accessor: 'change',
-            }
-          ]
-      }], []);
-
   return (
     <div className="app">
-      {loader}
-      <div className='app__nav-banner'>
-        <div className='app__nav-banner__title'>
-          Trading Waza  .Beta
-        </div>
-      </div>
-
-      <div className='app__layout'>
-        <div className='app__indicator-filter-wrapper'>
-          <div className='app__indicator-filter-wrapper__indicator-filter'>
-            <IndicatorFilter/>
+        {loader}
+        <div className='app__nav-banner'>
+          <div className='app__nav-banner__icon'>
+            <BiFilter onClick={handleMobileFilterClick}/>&nbsp;&nbsp; 
           </div>
-
-          <div>
-            <JoinUsCard/>
-            <br></br>
+          <div className='app__nav-banner__title'>
+            Trading Waza  .Beta
           </div>
         </div>
 
-        <div className='app__rows-table-wrapper'>
-          <RowTable columns={columns} data={rows.sort((a, b) => a.ticker.localeCompare(b.ticker))}/>
+        <div className='app__layout'>
+          <div className='app__indicator-filter-wrapper'>
+            <div className='app__indicator-filter-wrapper__indicator-filter'>
+              <IndicatorFilter/>
+            </div>
+
+            <div>
+              <JoinUsCard/>
+              <br></br>
+            </div>
+          </div>
+
+          <div className='app__rows-table-wrapper'>
+            <RowTable columns={columns} data={rows.sort((a, b) => a.ticker.localeCompare(b.ticker))}/>
+          </div>
         </div>
-      </div> 
+        
+        <Drawer
+          className='app__mobile-drawer'
+          open={drawerOpen}
+          onClose={handleMobileFilterClose}
+        >
+          <div className='app__indicator-mobile-filter-wrapper'>
+            <div className='app__indicator-mobile-filter-wrapper__indicator-filter'>
+              <IndicatorFilter/>
+            </div>
+
+            <div>
+              <JoinUsCard/>
+              <br></br>
+            </div>
+          </div>
+        </Drawer> 
     </div>
   );
 }

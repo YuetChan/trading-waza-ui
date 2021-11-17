@@ -12,6 +12,7 @@ const RowsTable = ({columns, data}) => {
   } = useTable({columns, data});
 
   let tableBody = <tr><td colSpan={7}>No data matching the filter</td></tr>;
+  
   if(rows.length === 0) {
     tableBody = <tr><td colSpan={7}>No data matching the filter</td></tr>;
   }else {
@@ -26,7 +27,6 @@ const RowsTable = ({columns, data}) => {
       );
     });
 
-    
   }
 
   return (
