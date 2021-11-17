@@ -14,7 +14,6 @@ import moment from 'moment';
 import 'moment-timezone';
 
 import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
 import LinearProgress from '@mui/material/LinearProgress';
 
 const App = () => {
@@ -113,6 +112,7 @@ const App = () => {
           open={drawerOpen}
           onClose={handleMobileFilterClose}
         >
+          {loader}
           <div className='app__indicator-mobile-filter-wrapper'>
             <div className='app__indicator-mobile-filter-wrapper__indicator-filter'>
               <IndicatorFilter/>
