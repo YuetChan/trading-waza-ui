@@ -83,7 +83,6 @@ const App = () => {
         </div>
       </div>
 
-
       <div className='app__layout'>
         <div className='app__indicator-filter-wrapper'>
           <div className='app__indicator-filter-wrapper__indicator-filter'>

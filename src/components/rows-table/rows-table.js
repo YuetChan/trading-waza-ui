@@ -1,8 +1,6 @@
-import { useSelector } from 'react-redux';
 import './rows-table.scss';
 
 import { useTable } from 'react-table';
-import { CircularProgress } from '@mui/material';
 
 const RowsTable = ({columns, data}) => {
   const {
@@ -15,7 +13,7 @@ const RowsTable = ({columns, data}) => {
 
   let tableBody = <tr><td colSpan={7}>No data matching the filter</td></tr>;
   if(rows.length === 0) {
-    tableBody = <tr><td colSpan={7}>No data matching the filter</td></tr>
+    tableBody = <tr><td colSpan={7}>No data matching the filter</td></tr>;
   }else {
     tableBody = rows.map((row, i) => {
       prepareRow(row);
@@ -26,7 +24,9 @@ const RowsTable = ({columns, data}) => {
           })}
         </tr>
       );
-    })
+    });
+
+    
   }
 
   return (

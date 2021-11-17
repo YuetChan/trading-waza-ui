@@ -19,18 +19,4 @@ pre {
 
     line-height: 140%;
     counter-reset: line-numbering;
-
-    // .line::before {
-    //     content: counter(line-numbering);
-    //     counter-increment: line-numbering;
-
-    //     padding-right: 1em;
-    //     padding-left: 8px;
-
-    //     width: 1.5em;
-    //     text-align: right;
-
-    //     opacity: 0.5;
-    //     color: whitesmoke;
-    // }
 }
