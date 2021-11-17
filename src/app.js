@@ -38,7 +38,7 @@ const App = () => {
       return {
         ticker: row.ticker.name,
         date: moment(row.processedAt).tz('America/New_York').format("YYYY-MM-DD"),
-        change: priceDetail.change.toFixed(2),
+        change: (priceDetail.change * 100).toFixed(2),
 
         open: priceDetail.open.toFixed(2),
         high: priceDetail.high.toFixed(2),
