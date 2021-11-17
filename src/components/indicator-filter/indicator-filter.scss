@@ -15,11 +15,25 @@
 
     margin-bottom: 13px;
 
-    h3 {
-      margin: 21px 9px;
+    &__header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      
+      h3 {
+        margin: 21px 9px;
+        color: #4d4d4d;
+      }
 
-      color: #4d4d4d;
+      &__cancel-icon {
+        font-size: 19px;
+        transform: translateY(3px);
+      }
     }
+
+
+
+
 
     &__search {
       display: flex;

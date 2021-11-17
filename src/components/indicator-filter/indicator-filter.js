@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
 import { TiDeleteOutline } from 'react-icons/ti'
+import { ImCancelCircle } from 'react-icons/im'
 
 import './indicator-filter.scss';
 import { replaceUnderscoreWith, capitalizeBy } from '../../../src/tw-utils/prettier'
@@ -150,7 +152,14 @@ const IndicatorFilter = () => {
   return (
     <div className='indicator-filter'>
       <div className='indicator-filter__autocomplete'>
-        <h3>Filter Settings</h3>
+        <div className='indicator-filter__autocomplete__header'>
+          <h3>Filter Settings </h3>
+          {/* Potential Feature!! */}
+          {/* <div onClick={} className='indicator-filter__autocomplete__header__cancel-icon'>
+            <ImCancelCircle/>
+          </div> */}
+        </div>
+        
         <div className='indicator-filter__date-picker'>
 
           <TextField
