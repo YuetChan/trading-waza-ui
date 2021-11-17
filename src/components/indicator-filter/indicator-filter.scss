@@ -5,7 +5,7 @@
 
   &__date-picker {
     margin-bottom: 21px;
-    width: 275px;
+    width: 100%;
   }
 
   &__autocomplete {
@@ -15,10 +15,18 @@
 
     margin-bottom: 13px;
 
+    h3 {
+      margin: 21px 9px;
+
+      color: #4d4d4d;
+    }
+
     &__search {
       display: flex;
       flex-direction: row;
       align-items: center;
+
+      width: 100%;
 
       margin-bottom: 23px;
     }

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { BsSearch } from 'react-icons/bs';
 import { TiDeleteOutline } from 'react-icons/ti'
 
 import './indicator-filter.scss';
 import { replaceUnderscoreWith, capitalizeBy } from '../../../src/tw-utils/prettier'
 
+import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
@@ -115,12 +115,15 @@ const IndicatorFilter = () => {
     if(prefix === '') {
       setIndicatorIncludeds([...indicators]);
     }else {
-      const includeds = indicators.filter(indicator => replaceUnderscoreWith(indicator, ' ').includes(prefix));
+      const includeds = indicators.filter(indicator => {
+        return replaceUnderscoreWith(indicator, ' ').toLowerCase().includes(prefix)
+      });
+    
       setIndicatorIncludeds([...includeds]);
     }
   }
 
-  const handleSearchClick = () => { dispatch(updateFilter(daysAgo, indicatorChecks)); }
+  const handleSearch = () => { dispatch(updateFilter(daysAgo, indicatorChecks)); }
 
   const resetChipsElement = () => {
     chipsElement.splice(0, chipsElement.length);
@@ -146,39 +149,41 @@ const IndicatorFilter = () => {
 
   return (
     <div className='indicator-filter'>
-      <div className='indicator-filter__date-picker'>
-        <TextField
-          onChange={handleDateChange}
-          id="date-picker"
-          defaultValue={moment().tz('America/New_York').format("YYYY-MM-DD")}
-          type="date"
-          sx={{ width: '100%' }}
-          InputProps={{
-            endAdornment: <InputAdornment position="end">EST</InputAdornment>,
-          }}
-        />
-      </div>
-
       <div className='indicator-filter__autocomplete'>
-        <div className="indicator-filter__autocomplete">
-          <div className="indicator-filter__autocomplete__search">
-            <TextField 
-              sx={{width: "227px"}}
-              label="Indicator Prefix"
-              onChange={handlePrefixChange}
-             />
-            <IconButton onClick={handleSearchClick}>
-              <BsSearch className="indicator-filter__autocomplete__btn" />
-            </IconButton>
-          </div>
+        <h3>Filter Settings</h3>
+        <div className='indicator-filter__date-picker'>
 
-          <div class="indicator-filter__autocomplete__checkboxes">
-            <List sx={{width: '267px'}}>
-              {getIndicatorCheckboxes(indicators)}
-            </List>
-          </div>
+          <TextField
+            sx={{width: "100%"}}
+            onChange={handleDateChange}
+            id="date-picker"
+            defaultValue={moment().tz('America/New_York').format("YYYY-MM-DD")}
+            type="date"
+            InputProps={{
+              endAdornment: <InputAdornment position="end">EST</InputAdornment>,
+            }}
+          />
         </div>
+
+        <div className="indicator-filter__autocomplete__search">
+          <TextField 
+            sx={{width: "100%"}}
+            label="Indicator Prefix"
+            onChange={handlePrefixChange}
+          />
+        </div>
+
+        <div class="indicator-filter__autocomplete__checkboxes">
+          <List sx={{width: '267px'}}>
+            {getIndicatorCheckboxes(indicators)}
+          </List>
+        </div>
+
+        <br></br>
+        <Button variant="outlined" onClick={handleSearch}>Search</Button>
       </div>
+
+      <br></br>
 
       <div className='indicator-filter__chips-wrapper'>   
         {chipsElement}

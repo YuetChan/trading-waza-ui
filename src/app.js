@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { isMobile } from 'react-device-detect';
 
 import './app.scss';
 
@@ -73,6 +74,25 @@ const App = () => {
           }
         ]
     }], []);
+
+    const mobileColumns = useMemo(
+      () => [{
+          Header: 'Filtered Result(Daily Chart Only)',
+          columns: [{
+              Header: 'Ticker',
+              accessor: 'ticker',
+            },{
+              Header: 'Open',
+              accessor: 'open',
+            },{
+              Header: 'Close',
+              accessor: 'close',
+            },{
+              Header: 'Change %',
+              accessor: 'change',
+            }
+          ]
+      }], []);
 
   return (
     <div className="app">

@@ -222,7 +222,7 @@ const JoinUsCard = () => {
         </CardContent>
 
         <CardActions>
-          <Button size="small" onClick={handleSubscribeCardOpen}>SUBSCRIBE</Button>
+          <Button size="small" variant="outlined" onClick={handleSubscribeCardOpen}>SUBSCRIBE</Button>
         </CardActions>
       </Card>
 
