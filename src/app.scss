@@ -5,7 +5,7 @@
   &__nav-banner {
     position: relative;
     padding: 0px 43px;
-    padding-right: 35px;
+    padding-left: 15px;
     
     color: rgba(77, 77, 77, 1);
     font-size: 23px;
@@ -76,6 +76,11 @@
     overflow-y: auto;
 
     background-color: white;
+
+    a {
+      text-decoration: none;
+      color: rgb(0, 116, 204);
+    }
   }
 
   @media only screen and (max-width: 600px) {
@@ -87,7 +92,7 @@
         display: block;
         transform: translateY(3px);
 
-        font-size: 37px;
+        font-size: 29px;
         color: rgba(233, 30, 99, 1);
       }
     }

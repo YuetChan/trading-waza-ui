@@ -55,10 +55,16 @@ const App = () => {
 
   const columns = useMemo(
     () => [{
-        Header: 'Filtered Result(Daily Chart Only)',
+        Header: 'Filtered Result (Daily Chart Only)',
         columns: [{
             Header: 'Ticker',
             accessor: 'ticker',
+            Cell: ({ row }) => 
+            <a 
+              href={'https://www.tradingview.com/chart/?symbol=' + row.original.ticker} 
+              target='_blank'>
+                {row.original.ticker}
+            </a>
           },{
             Header: 'Open',
             accessor: 'open',
@@ -74,6 +80,12 @@ const App = () => {
           },{
             Header: 'Change %',
             accessor: 'change',
+            Cell: ({ row }) => 
+            
+            <span style={{
+              color: row.original.change.includes('-') ? 'red': 'green'
+            }
+            }>{row.original.change}</span>
           }
         ]
     }], []);

@@ -11,10 +11,16 @@ const RowsTable = ({columns, data}) => {
     prepareRow 
   } = useTable({columns, data});
 
-  let tableBody = <tr><td colSpan={7}>No data matching the filter</td></tr>;
+  let tableBody = 
+    <tr><td colSpan={7}>
+      No data matching the filter
+    </td></tr>;
   
   if(rows.length === 0) {
-    tableBody = <tr><td colSpan={7}>No data matching the filter</td></tr>;
+    tableBody = 
+      <tr><td colSpan={7}>
+        No data matching the filter
+      </td></tr>;
   }else {
     tableBody = rows.map((row, i) => {
       prepareRow(row);
