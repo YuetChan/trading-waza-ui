@@ -34,11 +34,11 @@ const JoinUsCard = () => {
   const [isSubscribeCardOpen, setSubscribeCardOpen] = React.useState(false);
 
   const handleSubscribeCardOpen = () => {
-    console.log('handleSubscribeCardOpen');
+    console.debug('handleSubscribeCardOpen');
     setSubscribeCardOpen(true);
   }
   const handleSubscribeCardClose = () => { 
-    console.log('handleSubscribeCardClose');
+    console.debug('handleSubscribeCardClose');
     setSubscribeCardState(CardState.ENTER);
     setSubscribeCardOpen(false); 
 
@@ -46,7 +46,7 @@ const JoinUsCard = () => {
   };
 
   const handleSubscribeCardSubmit = async (event) => {
-    console.log('handleSubscribeCardSubmit');
+    console.debug('handleSubscribeCardSubmit');
     event.preventDefault();
 
     subscribeCardStateDecorator(async () => {
@@ -75,7 +75,7 @@ const JoinUsCard = () => {
   
       }catch (err) {
         confirmMsg = 'Subscribe failed.\nOpps, something is wrong.';
-        console.log(err);
+        console.debug(err);
       }
 
       if(confirmMsg !== '') {
@@ -97,11 +97,11 @@ const JoinUsCard = () => {
   const [isVerifyCardOpen, setVerifyCardOpen] = React.useState(false);
 
   const handleVerifyCardOpen = () => {
-    console.log('handleVerifyCardOpen');
+    console.debug('handleVerifyCardOpen');
     setVerifyCardOpen(true); 
   }
   const handleVerifyCardClose = () => { 
-    console.log('handleVerifyCardClose');
+    console.debug('handleVerifyCardClose');
 
     setVerifyCardOpen(false);
     setPhone('');
@@ -109,7 +109,7 @@ const JoinUsCard = () => {
   };
 
   const handleResend = async () => {
-    console.log('handleResendClick');
+    console.debug('handleResendClick');
     subscribeCardStateDecorator(async () => {
       let confirmMsg = '';
 
@@ -132,7 +132,7 @@ const JoinUsCard = () => {
         }
       }catch (err) {
         confirmMsg = 'Resend failed.\nOpps, something is wrong.';
-        console.log(err);
+        console.debug(err);
       }
 
       if(confirmMsg !== '') {
@@ -142,7 +142,7 @@ const JoinUsCard = () => {
   }
 
   const handleVerifyCardInputChange = (event) => {
-    console.log('handleVerifyCardInputChange')
+    console.debug('handleVerifyCardInputChange')
     const value = event.target.value;
 
     const isNum = value.match(/^[0-9]+$/) != null;
@@ -160,7 +160,7 @@ const JoinUsCard = () => {
   }
 
   const handleVerifyCardSubmit = async (event) => {
-    console.log('handleVerifyCardSubmit');
+    console.debug('handleVerifyCardSubmit');
     event.preventDefault();
 
     verifyCardStateDecorator(async () => {
@@ -183,7 +183,7 @@ const JoinUsCard = () => {
 
       }catch (err) {
         confirmMsg = 'Verification failed.\nOpps, something is wrong.';
-        console.log(err);
+        console.debug(err);
       }
 
       if(confirmMsg !== '') {
